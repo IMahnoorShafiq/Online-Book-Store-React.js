@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Img1 from "../../assets/books/book2.jpg";
 import Img2 from "../../assets/books/book1.jpg";
 import Img3 from "../../assets/books/book3.jpg";
@@ -77,6 +77,15 @@ const ServicesData = [
 ];
 
 const Services = ({ handleOrderPopup }) => {
+  const [cart, setCart] = useState({});
+
+  const handleAddToCart = (id) => {
+    setCart((prevCart) => ({
+      ...prevCart,
+      [id]: (prevCart[id] || 0) + 1,
+    }));
+  };
+
   return (
     <>
       <span id="services"></span>
@@ -96,7 +105,7 @@ const Services = ({ handleOrderPopup }) => {
               <div
                 key={service.id}
                 data-aos="zoom-in"
-                className="rounded-2xl bg-white dark:bg-gray-800 hover:bg-orange-500 dark:hover:bg-orange-600 hover:text-white relative shadow-xl duration-high group max-w-[300px] p-4 mb-12" // Added mb-12 for spacing
+                className="rounded-2xl bg-white dark:bg-gray-800 hover:bg-orange-500 dark:hover:bg-orange-600 hover:text-white relative shadow-xl duration-high group max-w-[300px] p-4 mb-12"
               >
                 <div className="h-[200px] flex justify-center items-center">
                   <img
@@ -116,6 +125,19 @@ const Services = ({ handleOrderPopup }) => {
                   <p className="text-gray-500 group-hover:text-white duration-high text-sm line-clamp-2 mt-2">
                     {service.description}
                   </p>
+                  <div className="mt-4">
+                    <button
+                      className="bg-orange-500 hover:scale-105 duration-300 text-white py-1 px-4 rounded-full group-hover:bg-gray-200 group-hover:text-orange-700"
+                      onClick={() => handleAddToCart(service.id)}
+                    >
+                      Add to Cart
+                    </button>
+                    {cart[service.id] && (
+                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                        Added to Cart: {cart[service.id]}
+                      </p>
+                    )}
+                  </div>
                   <button
                     className="bg-orange-500 hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-gray-200 group-hover:text-orange-700"
                     onClick={handleOrderPopup}
